@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:numberfacts/date.dart';
+import 'package:numberfacts/math.dart';
+import 'package:numberfacts/year.dart';
 
 void main() {
   runApp(const MaterialApp(
@@ -83,21 +86,39 @@ class _MyAppState extends State<MyApp> {
                     width: 10,
                   ),
                   ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => const MathScreen(),
+                        ),
+                      );
+                    },
                     child: const Text('Math'),
                   ),
                   const SizedBox(
                     width: 50,
                   ),
                   ElevatedButton(
-                    onPressed: () {},
-                    child: const Text('Trivia'),
+                    onPressed: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => const YearScreen(),
+                        ),
+                      );
+                    },
+                    child: const Text('Year'),
                   ),
                   const SizedBox(
                     width: 50,
                   ),
                   ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => const DateScreen(),
+                        ),
+                      );
+                    },
                     child: const Text('Date'),
                   ),
                   const SizedBox(
@@ -120,7 +141,7 @@ class _MyAppState extends State<MyApp> {
               const SizedBox(
                 height: 20,
               ),
-              ElevatedButton(
+              TextButton(
                 onPressed: () async {
                   if (randomTextController.text.isEmpty) {
                     ScaffoldMessenger.of(context).showSnackBar(
@@ -137,9 +158,11 @@ class _MyAppState extends State<MyApp> {
                   } else {
                     String fact =
                         await fetchRandomFact(randomTextController.text);
-                    setState(() {
-                      randomFact = fact;
-                    });
+                    setState(
+                      () {
+                        randomFact = fact;
+                      },
+                    );
                   }
                 },
                 child: const Text('Get random fact!'),

@@ -1,43 +1,43 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
-class MathScreen extends StatefulWidget {
-  const MathScreen({super.key});
+class YearScreen extends StatefulWidget {
+  const YearScreen({super.key});
 
   @override
-  State<MathScreen> createState() => _MathScreenState();
+  State<YearScreen> createState() => _YearScreenState();
 }
 
-class _MathScreenState extends State<MathScreen> {
-  TextEditingController mathTextController = TextEditingController();
+class _YearScreenState extends State<YearScreen> {
+  TextEditingController yearTextController = TextEditingController();
   TextEditingController displayTextController = TextEditingController();
   FocusNode focusNode = FocusNode();
-  String mathFact = '';
+  String yearFact = '';
   bool isLoading = false;
 
   void sendParam() {
-    final number = mathTextController.text;
+    final number = yearTextController.text;
     if (number.isNotEmpty) {
-      fetchMathFact(number);
+      fetchyearFact(number);
     }
   }
 
-  Future<String> fetchMathFact(String number) async {
+  Future<String> fetchyearFact(String number) async {
     setState(() {
       isLoading = true;
     });
     await Future.delayed(const Duration(seconds: 1));
     final response =
-        await http.get(Uri.parse('http://numbersapi.com/$number/math'));
+        await http.get(Uri.parse('http://numbersapi.com/$number/year'));
     if (response.statusCode == 200) {
       setState(() {
-        mathFact = response.body;
+        yearFact = response.body;
         isLoading = false;
       });
       return response.body;
     } else {
       setState(() {
-        mathFact = 'Error: Unable to fetch the fact.';
+        yearFact = 'Error: Unable to fetch the fact.';
         isLoading = false;
       });
       return 'Error: Unable to fetch the fact.';
@@ -50,7 +50,7 @@ class _MathScreenState extends State<MathScreen> {
       onTap: () => focusNode.unfocus(),
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Math facts'),
+          title: const Text('Year fact'),
         ),
         body: GestureDetector(
           onTap: () {
@@ -63,9 +63,9 @@ class _MathScreenState extends State<MathScreen> {
                 SizedBox(
                   width: 50,
                   child: TextField(
-                    decoration: const InputDecoration(hintText: '37'),
+                    decoration: const InputDecoration(hintText: ''),
                     keyboardType: TextInputType.number,
-                    controller: mathTextController,
+                    controller: yearTextController,
                     focusNode: focusNode,
                   ),
                 ),
@@ -74,29 +74,29 @@ class _MathScreenState extends State<MathScreen> {
                 ),
                 TextButton(
                   onPressed: () async {
-                    if (mathTextController.text.isEmpty) {
+                    if (yearTextController.text.isEmpty) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
                           content: Center(
-                            child: Text('Enter a number'),
+                            child: Text('Enter any year'),
                           ),
                           duration: Duration(seconds: 2),
                         ),
                       );
                       setState(() {
-                        mathFact = '';
+                        yearFact = '';
                       });
                     } else {
                       String fact =
-                          await fetchMathFact(mathTextController.text);
+                          await fetchyearFact(yearTextController.text);
                       setState(
                         () {
-                          mathFact = fact;
+                          yearFact = fact;
                         },
                       );
                     }
                   },
-                  child: const Text('Get math fact!'),
+                  child: const Text('Get fact about year'),
                 ),
                 const SizedBox(
                   height: 30,
@@ -106,7 +106,7 @@ class _MathScreenState extends State<MathScreen> {
                     : SizedBox(
                         width: 300,
                         child: Text(
-                          mathFact,
+                          yearFact,
                           textAlign: TextAlign.center,
                         ),
                       ),
